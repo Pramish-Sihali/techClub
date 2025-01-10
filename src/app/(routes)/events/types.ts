@@ -11,6 +11,8 @@ export interface Event {
     speaker?: string;
     additionalDetails?: string;
     prerequisites?: string[];
+    image: string;
+
   }
   
   export interface EventFilters {
