@@ -9,7 +9,7 @@ export const AboutSection = () => {
           <div className="space-y-6">
             <h2 className="text-3xl font-bold text-kings-blue">About Tech Club</h2>
             <p className="text-gray-600">
-              Founded in 2020, the King's College Tech Club has grown into a vibrant community of tech enthusiasts, innovators, and future industry leaders.
+              Founded in 2020, the King&apos;s College Tech Club has grown into a vibrant community of tech enthusiasts, innovators, and future industry leaders.
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               <Card>

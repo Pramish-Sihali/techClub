@@ -11,7 +11,7 @@ export const HeroSection = () => {
           Innovate. Create. <span className="text-kings-gold">Connect.</span>
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          Join King's College Tech Club and be part of a community that's shaping the future of technology.
+          Join King&apos;s College Tech Club and be part of a community that&apos;s shaping the future of technology.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/join">

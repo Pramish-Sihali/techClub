@@ -7,9 +7,7 @@ import {
   Calendar,
   FileText,
   Settings,
-  Image,
-  Bell
-} from "lucide-react"
+  Image} from "lucide-react"
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },

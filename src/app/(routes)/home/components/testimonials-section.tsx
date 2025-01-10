@@ -42,7 +42,7 @@ export const TestimonialsSection = () => {
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
-                <CardDescription className="text-gray-600">"{testimonial.quote}"</CardDescription>
+                <CardDescription className="text-gray-600">&quot;{testimonial.quote}&quot;</CardDescription>
               </CardHeader>
             </Card>
           ))}

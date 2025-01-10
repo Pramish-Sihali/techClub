@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-[#F0AB00] font-bold mb-4">Tech Club</h3>
-            <p className="text-sm">King's College</p>
+            <p className="text-sm">King&apos;s College</p>
           </div>
           <div>
             <h3 className="text-[#F0AB00] font-bold mb-4">Quick Links</h3>
