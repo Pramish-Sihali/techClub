@@ -81,7 +81,7 @@ export default function MembersPage() {
               />
             </Button>
             <p className="text-lg text-[#707070] mt-4">
-              Join our executive team and help shape the future of tech at King's College
+              Join our executive team and help shape the future of tech at King&apos; College
             </p>
           </div>
 

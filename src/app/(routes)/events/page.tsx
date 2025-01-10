@@ -42,9 +42,9 @@ export default function EventsPage() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  const handleRegister = async (eventId: string) => {
-    console.log('Registering for event:', eventId);
-  };
+  // const handleRegister = async (eventId: string) => {
+  //   console.log('Registering for event:', eventId);
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#0C2340]/5">
