@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Code, Laptop, Users, Timer } from "lucide-react"
+import {  Laptop, Users, Timer } from "lucide-react"
 import Image from "next/image"
 
 export const AboutSection = () => {

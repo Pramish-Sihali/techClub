@@ -52,7 +52,7 @@ export const TestimonialsSection = () => {
                   </div>
                 </div>
                 <CardDescription className="text-[#707070] text-base">
-                  "{testimonial.quote}"
+                &quot;{testimonial.quote}&quot;
                 </CardDescription>
               </CardHeader>
             </Card>
