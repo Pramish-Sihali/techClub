@@ -1,16 +1,14 @@
-// RegisterEventModal.tsx
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import Calendar from "./calender";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,14 +32,27 @@ interface RegistrationForm {
   specialRequirements?: string;
 }
 
-export const RegisterEventModal = ({ event, open, onClose }: RegisterEventModalProps) => {
+export const RegisterEventModal: React.FC<RegisterEventModalProps> = ({
+  event,
+  open,
+  onClose,
+}) => {
   const [formData, setFormData] = useState<RegistrationForm>({
     name: "",
     studentId: "",
     email: "",
     phone: "",
-    missingClass: "no"
+    missingClass: "no",
   });
+
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return "";
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,7 +154,7 @@ export const RegisterEventModal = ({ event, open, onClose }: RegisterEventModalP
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {formData.courseDate ? (
-                        format(formData.courseDate, "PPP")
+                        formatDate(formData.courseDate)
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -151,10 +162,9 @@ export const RegisterEventModal = ({ event, open, onClose }: RegisterEventModalP
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
                     <Calendar
-                      mode="single"
-                      selected={formData.courseDate}
-                      onSelect={(date) => setFormData({ ...formData, courseDate: date })}
-                      initialFocus
+                      value={formData.courseDate}
+                      onChange={(date) => setFormData({ ...formData, courseDate: date })}
+                      className="w-full max-w-md"
                     />
                   </PopoverContent>
                 </Popover>
