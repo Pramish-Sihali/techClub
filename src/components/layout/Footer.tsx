@@ -1,10 +1,9 @@
-// app/components/layout/Footer.tsx
 import Link from 'next/link'
 
 export function Footer() {
   return (
     <footer className="bg-[#0C2340] text-white py-8">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-[#F0AB00] font-bold mb-4">Tech Club</h3>
