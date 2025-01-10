@@ -1,21 +1,17 @@
-// app/(routes)/members/types.ts
-export type MemberRole = 'core' | 'active' | 'contributor';
-
-export interface SocialLinks {
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  website?: string;
-}
-
+// types.ts
 export interface Member {
   id: string;
   name: string;
-  role: MemberRole;
+  role: 'core' | 'active' | 'contributor';
   position: string;
   avatar: string;
   bio: string;
-  socialLinks: SocialLinks;
+  socialLinks: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+  };
   contributions?: string[];
   joinedDate: string;
 }
@@ -23,4 +19,26 @@ export interface Member {
 export interface MemberFilters {
   role: string;
   search: string;
+}
+
+export interface ExecutivePosition {
+  id: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  status: 'open' | 'closed';
+  type: 'executive' | 'core';
+  commitment: string;
+}
+
+export interface ApplicationForm {
+  name: string;
+  studentId: string;
+  email: string;
+  phone: string;
+  position: string;
+  experience: string;
+  motivation: string;
+  availability: string;
+  references?: string;
 }
