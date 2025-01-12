@@ -1,62 +1,80 @@
 // app/(routes)/blog/components/blog-card.tsx
-
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from 'next/image';
+import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { BlogPost } from "../types";
 
 export function BlogCard({ post }: { post: BlogPost }) {
   const router = useRouter();
+  
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
 
   return (
     <Card 
-      className="hover:shadow-lg transition-shadow cursor-pointer"
       onClick={() => router.push(`/blog/${post.slug}`)}
+      className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group border-0 bg-white h-full flex flex-col"
     >
-      <CardHeader>
-        <div className="flex items-center gap-4 mb-4">
-          <Avatar>
-            <AvatarImage src={post.author.avatar} alt={post.author.name} />
-            <AvatarFallback>{post.author.name[0]}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium">{post.author.name}</p>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <CalendarDays className="mr-1 h-3 w-3" />
-              {new Date(post.publishedAt).toLocaleDateString()}
-            </div>
-          </div>
-        </div>
-        <CardTitle className="hover:text-kings-blue transition-colors">
+      <div className="relative w-full pt-[56.25%]">
+        <Image
+          src={`/images/blogs/${post.image}`}
+          alt={post.title}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-kings-blue transition-colors">
           {post.title}
-        </CardTitle>
-        <CardDescription>{post.excerpt}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex gap-2">
-            <Badge variant="secondary">{post.category}</Badge>
-            {post.tags.map(tag => (
-              <Badge key={tag} variant="outline">{tag}</Badge>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <Button
+        </h3>
+        
+        <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+          {post.excerpt}
+        </p>
+
+        <div className="flex gap-2 flex-wrap mb-6">
+          <Badge 
+            variant="secondary"
+            className="bg-kings-blue/10 text-kings-blue hover:bg-kings-blue/20"
+          >
+            {post.category}
+          </Badge>
+          {post.tags.slice(0, 2).map(tag => (
+            <Badge 
+              key={tag} 
               variant="outline"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                router.push(`/blog/${post.slug}/edit`);
-              }}
+              className="border-kings-blue/20 text-kings-blue/80"
             >
-              Edit Post
-            </Button>
+              {tag}
+            </Badge>
+          ))}
+        </div>
+
+        <div className="pt-4 border-t mt-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={post.author.avatar} alt={post.author.name} />
+              <AvatarFallback className="bg-kings-blue text-white">
+                {post.author.name[0]}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium">{post.author.name}</span>
+          </div>
+          
+          <div className="flex items-center text-sm text-muted-foreground">
+            <CalendarDays className="mr-2 h-4 w-4" />
+            {formattedDate}
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }
