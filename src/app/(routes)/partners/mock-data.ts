@@ -1,5 +1,5 @@
 // mock-data.ts
-import { Partner, Value } from "./types";
+import { Partner } from "./types";
 
 export const mockPartners: Partner[] = [
   {

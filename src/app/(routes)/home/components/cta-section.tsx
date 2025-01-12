@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
+// import { Card } from "@/components/ui/card"
+// import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 export const CTASection = () => {
@@ -13,7 +13,7 @@ export const CTASection = () => {
               Ready to Get Involved?
             </h2>
             <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-              Join our next event and become part of our growing tech community at King's College.
+              Join our next event and become part of our growing tech community at King&apos;s College.
             </p>
             <Button 
               size="lg"

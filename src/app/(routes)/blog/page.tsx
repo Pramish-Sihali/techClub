@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BlogCard } from './components/blog-card';
+// import { BlogCard } from './components/blog-card';
 import { BlogFiltersComponent } from './components/blog-filters';
 import { BlogGrid } from './components/blog-grid';
 import { BlogFilters } from './types';

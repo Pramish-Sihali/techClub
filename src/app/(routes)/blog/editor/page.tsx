@@ -29,7 +29,7 @@ export default function BlogEditorPage() {
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleSubmit = async (status: 'draft' | 'published') => {
     setIsSubmitting(true);
