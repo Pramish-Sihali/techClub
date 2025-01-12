@@ -27,7 +27,7 @@ export const HeroSection = () => {
           Join King&apos;s College Tech Club and be part of a community that&apos;s shaping the future of technology.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/join">
+          <Link href="/">
             <Button 
               size="lg" 
               className="bg-[#0C2340] text-white hover:bg-[#0C2340]/90"
