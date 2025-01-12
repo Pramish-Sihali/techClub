@@ -9,21 +9,21 @@ const upcomingEvents = [
     date: "March 15, 2025",
     description: "Learn modern web development techniques using React and Next.js",
     icon: <CalendarDays className="w-5 h-5" />,
-    link: "/events/web-dev-workshop"
+    link: "/events"
   },
   {
     title: "AI/ML Hackathon",
     date: "March 20, 2025",
     description: "48-hour hackathon focused on artificial intelligence and machine learning",
     icon: <Trophy className="w-5 h-5" />,
-    link: "/events/ai-ml-hackathon"
+    link: "/events"
   },
   {
     title: "Tech Industry Networking",
     date: "March 25, 2025",
     description: "Connect with industry professionals and learn about career opportunities",
     icon: <Users className="w-5 h-5" />,
-    link: "/events/networking"
+    link: "/events"
   }
 ];
 

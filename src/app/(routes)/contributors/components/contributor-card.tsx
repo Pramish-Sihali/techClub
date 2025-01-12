@@ -81,7 +81,7 @@ export function ContributorCard({ contributor, onSelect }: ContributorCardProps)
           </div>
         </div>
 
-        <div className="flex justify-between items-center pt-4 border-t border-[#0C2340]/10">
+        <div className="flex justify-between items-center pt-4 border-t border-[#FFFFFF]/10">
           <div className="flex gap-1">
             {contributor.githubUrl && (
               <a 
@@ -90,7 +90,7 @@ export function ContributorCard({ contributor, onSelect }: ContributorCardProps)
                 rel="noopener noreferrer" 
                 onClick={e => e.stopPropagation()}
               >
-                <Button variant="ghost" size="icon" className="hover:text-[#1E88E5]">
+                <Button variant="ghost" size="icon" className="hover:text-[#FFFFFF]">
                   <Github className="h-4 w-4" />
                 </Button>
               </a>
@@ -102,7 +102,7 @@ export function ContributorCard({ contributor, onSelect }: ContributorCardProps)
                 rel="noopener noreferrer" 
                 onClick={e => e.stopPropagation()}
               >
-                <Button variant="ghost" size="icon" className="hover:text-[#1E88E5]">
+                <Button variant="ghost" size="icon" className="hover:text-[#FFFFFF]">
                   <Linkedin className="h-4 w-4" />
                 </Button>
               </a>
