@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useState } from 'react';
 import { MemberCard } from './components/member-card';
 import { MemberFiltersComponent } from './components/member-filters';
@@ -9,8 +8,8 @@ import { PositionCard } from './components/position-card';
 import { ApplicationFormModal } from './components/application-form-modal';
 import { Member, MemberFilters, ExecutivePosition } from './types';
 import { mockMembers, availablePositions } from './mock-data';
-import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { Users } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export default function MembersPage() {
   const [filters, setFilters] = useState<MemberFilters>({
@@ -19,7 +18,6 @@ export default function MembersPage() {
   });
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<ExecutivePosition | null>(null);
-  const [showPositions, setShowPositions] = useState(false);
 
   const filteredMembers = mockMembers.filter(member => {
     const matchesRole = filters.role === 'all' || member.role === filters.role;
@@ -31,11 +29,15 @@ export default function MembersPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-[#0C2340]/5">
-      <div className="container mx-auto px-4 py-12 space-y-16">
-        {/* Members Section */}
-        <section>
+    <div className="min-h-screen">
+      {/* Members Section */}
+      <div className="bg-gradient-to-b from-white to-[#0C2340]/5 py-20">
+        <div className="container mx-auto px-4 space-y-8">
           <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-[#FFD17E] px-4 py-2 rounded-full mb-6">
+              <Users className="w-5 h-5 text-[#0C2340]" />
+              <span className="text-[#0C2340] font-medium">Our Team</span>
+            </div>
             <h1 className="text-5xl font-bold text-[#0C2340] mb-4">Our Members</h1>
             <p className="text-lg text-[#707070] max-w-2xl mx-auto">
               Meet the amazing individuals who make our Tech Club thrive
@@ -62,56 +64,51 @@ export default function MembersPage() {
               <p className="text-[#707070] text-lg">No members found matching your criteria.</p>
             </div>
           )}
-        </section>
+        </div>
+      </div>
 
-        {/* Executive Positions Section */}
-        <section>
+      
+      {/* Executive Positions Section */}
+<Separator/>
+      <div className="bg-gradient-to-b from-[#0C2340]/20 to-[#94D4F2]/30 py-20">
+        <div className="container mx-auto px-4 space-y-8">
           <div className="text-center mb-12">
-            <Button 
-              variant="ghost"
-              onClick={() => setShowPositions(!showPositions)}
-              className="group"
-            >
-              <h2 className="text-4xl font-bold text-[#0C2340] group-hover:text-[#1E88E5]">
-                Available Positions
-              </h2>
-              <ChevronDown 
-                className={`ml-2 h-6 w-6 transition-transform duration-200 ${
-                  showPositions ? 'rotate-180' : ''
-                }`}
-              />
-            </Button>
-            <p className="text-lg text-[#707070] mt-4">
-              Join our executive team and help shape the future of tech at King&apos; College
+            <div className="inline-flex items-center gap-2 bg-[#F0AB00] px-4 py-2 rounded-full mb-6">
+              <Users className="w-5 h-5 text-[#0C2340]" />
+              <span className="text-[#0C2340] font-medium">Join Us</span>
+            </div>
+            <h2 className="text-4xl font-bold text-[#0C2340] mb-4">
+              Available Positions
+            </h2>
+            <p className="text-lg text-[#707070] max-w-2xl mx-auto">
+              Join our executive team and help shape the future of tech at King&apos;s College
             </p>
           </div>
 
-          {showPositions && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-              {availablePositions.map(position => (
-                <PositionCard
-                  key={position.id}
-                  position={position}
-                  onApply={setSelectedPosition}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Modals */}
-        <MemberDetailsModal
-          member={selectedMember}
-          open={!!selectedMember}
-          onClose={() => setSelectedMember(null)}
-        />
-
-        <ApplicationFormModal
-          position={selectedPosition}
-          open={!!selectedPosition}
-          onClose={() => setSelectedPosition(null)}
-        />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {availablePositions.map(position => (
+              <PositionCard
+                key={position.id}
+                position={position}
+                onApply={setSelectedPosition}
+              />
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Modals */}
+      <MemberDetailsModal
+        member={selectedMember}
+        open={!!selectedMember}
+        onClose={() => setSelectedMember(null)}
+      />
+
+      <ApplicationFormModal
+        position={selectedPosition}
+        open={!!selectedPosition}
+        onClose={() => setSelectedPosition(null)}
+      />
     </div>
   );
 }
