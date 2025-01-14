@@ -1,0 +1,103 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  studentId     String?   @unique
+  role          UserRole  @default(USER)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  profile       Profile?
+  eventRsvps    EventRSVP[]
+  contributions Contribution[]
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  bio         String?
+  department  String?
+  year        String?
+  skills      String[]
+  socialLinks Json?    // For GitHub, LinkedIn, etc.
+  
+  // Relations
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Event {
+  id              String    @id @default(cuid())
+  title           String
+  description     String
+  type            String
+  date            DateTime
+  time            String
+  location        String
+  status          EventStatus @default(OPEN)
+  speaker         String?
+  image           String?
+  prerequisites   String[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  rsvps          EventRSVP[]
+}
+
+model EventRSVP {
+  id        String   @id @default(cuid())
+  status    RSVPStatus
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String
+  eventId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+}
+
+model Contribution {
+  id          String   @id @default(cuid())
+  type        String
+  description String
+  date        DateTime
+  url         String?
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum EventStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+enum RSVPStatus {
+  GOING
+  NOT_GOING
+  WAITLIST
+}
