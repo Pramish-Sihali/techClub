@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from "framer-motion";
 import { Menu, X, User as UserIcon } from 'lucide-react';
-import { createClientComponentClient, type User } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import type { User } from '@supabase/auth-helpers-nextjs';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,19 +33,31 @@ export function Navigation() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
         const { data: profile } = await supabase
           .from('profiles')
           .select('role')
-          .eq('id', user.id)
+          .eq('id', session.user.id)
           .single();
         setIsAdmin(profile?.role === 'admin');
       }
     };
+    
     checkUser();
-  }, [supabase.auth]);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        checkUser();
+      } else {
+        setIsAdmin(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -58,7 +71,7 @@ export function Navigation() {
     { href: '/contributors', label: 'Contributors' },
     { href: '/blog', label: 'Blog' },
     { href: '/partners', label: 'Partners' },
-    ...(isAdmin ? [{ href: '/(routes)/admin', label: 'Admin' }] : [])
+    // ...(isAdmin ? [{ href: '/admin', label: 'Admin' }] : [])
   ];
 
   const AuthButton = () => {
@@ -68,7 +81,7 @@ export function Navigation() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={user.user_metadata?.avatar_url as string} />
+                <AvatarImage src={user.user_metadata?.avatar_url} />
                 <AvatarFallback>
                   <UserIcon className="h-6 w-6" />
                 </AvatarFallback>
@@ -78,7 +91,7 @@ export function Navigation() {
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => window.location.href = isAdmin ? '/(routes)/admin' : '/(routes)/account'}>
+            <DropdownMenuItem onClick={() => window.location.href = isAdmin ? '/admin' : '/account'}>
               Dashboard
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleSignOut}>
