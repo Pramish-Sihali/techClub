@@ -11,13 +11,13 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getSession()
 
   // Add paths that should be protected
-  const protectedPaths = ['/admin', '/members']
+  const protectedPaths = ['/admin' ]
   const isProtectedPath = protectedPaths.some(path => 
     req.nextUrl.pathname.startsWith(path)
   )
 
   if (isProtectedPath && !session) {
-    return NextResponse.redirect(new URL('/auth/signin', req.url))
+    return NextResponse.redirect(new URL('/login', req.url))
   }
 
   return res
