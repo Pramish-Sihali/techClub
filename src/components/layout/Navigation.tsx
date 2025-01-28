@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from "framer-motion";
 import { Menu, X, User as UserIcon } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -26,43 +26,62 @@ interface NavItem {
 
 export function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const supabase = createClientComponentClient();
 
+  const checkUser = useCallback(async () => {
+    if (isNavigating) return; // Prevent checks during navigation
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      setUser(session.user);
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+      setIsAdmin(profile?.role === 'admin');
+    } else {
+      setUser(null);
+      setIsAdmin(false);
+    }
+  }, [supabase, isNavigating]);
+
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
-        setIsAdmin(profile?.role === 'admin');
-      }
-    };
-    
     checkUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkUser();
-      } else {
-        setIsAdmin(false);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!isNavigating) {
+        if (session?.user) {
+          await checkUser();
+        } else {
+          setUser(null);
+          setIsAdmin(false);
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, [supabase, checkUser, isNavigating]);
 
   const handleSignOut = async () => {
+    setIsNavigating(true);
     await supabase.auth.signOut();
     setUser(null);
     setIsAdmin(false);
+    router.push('/');
+    setIsNavigating(false);
+  };
+
+  const handleAuthNavigation = (path: string) => {
+    setIsNavigating(true);
+    router.push(path);
+    // Reset navigation state after a delay to ensure navigation completes
+    setTimeout(() => setIsNavigating(false), 500);
   };
 
   const navItems: NavItem[] = [
@@ -71,11 +90,10 @@ export function Navigation() {
     { href: '/contributors', label: 'Contributors' },
     { href: '/blog', label: 'Blog' },
     { href: '/partners', label: 'Partners' },
-    // ...(isAdmin ? [{ href: '/admin', label: 'Admin' }] : [])
   ];
 
   const AuthButton = () => {
-    if (user) {
+    if (user && !isNavigating) {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -91,7 +109,7 @@ export function Navigation() {
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => window.location.href = isAdmin ? '/admin' : '/account'}>
+            <DropdownMenuItem onClick={() => handleAuthNavigation(isAdmin ? '/admin' : '/account')}>
               Dashboard
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleSignOut}>
@@ -104,16 +122,22 @@ export function Navigation() {
 
     return (
       <div className="flex items-center gap-4">
-        <Button variant="ghost" asChild>
-          <Link href="/login">Login</Link>
+        <Button 
+          variant="ghost" 
+          onClick={() => handleAuthNavigation('/login')}
+        >
+          Login
         </Button>
-        <Button asChild>
-          <Link href="/signup">Sign Up</Link>
+        <Button 
+          onClick={() => handleAuthNavigation('/signup')}
+        >
+          Sign Up
         </Button>
       </div>
     );
   };
 
+  // Rest of the component remains the same
   return (
     <nav className="sticky top-0 z-50 bg-white/10 backdrop-blur-xl border-b border-kings-blue/10 shadow-lg">
       <div className="max-w-7xl mx-auto">
