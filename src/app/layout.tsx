@@ -17,8 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={lexendDeca.className}>
         <AuthProvider>
-          <div className="min-h-screen bg-background relative">
             <BackgroundDecoration />
+          <div className="min-h-screen bg-background relative">
             <Navigation />
             <main className="max-w-7xl mx-auto px-4 py-8 relative">
               {children}
