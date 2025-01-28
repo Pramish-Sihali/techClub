@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getSession()
 
   // Add paths that should be protected
-  const protectedPaths = ['/admin' ]
+  const protectedPaths = ['/(routes)/admin', '/(routes)/account' ]
   const isProtectedPath = protectedPaths.some(path => 
     req.nextUrl.pathname.startsWith(path)
   )
