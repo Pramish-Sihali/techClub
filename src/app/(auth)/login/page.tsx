@@ -1,6 +1,5 @@
-// app/auth/login/page.tsx
-import UserLogin from '@/components/auth/UserLogin';
+import UserLogin from '@/components/auth/UserLogin'
 
-export default function LoginPage() {
-  return <UserLogin />;
+export default function Page() {
+  return <UserLogin />
 }
